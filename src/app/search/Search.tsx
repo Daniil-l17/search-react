@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import { Logo } from '@/components/logo/Logo';
 import { SearchResult } from '@/components/searchResults/SearchResult';
 import { ResultSkeleton } from '@/components/skeleton/ResultSkeleton';
@@ -24,9 +24,8 @@ const menu = [
 
 const negative = ['сука', 'блять', 'ахуеть', 'пиздец', 'пидр'];
 
-export const Search = () => {
+const Search = () => {
 	const searchParams = useSearchParams();
-
 	const search = searchParams.get('q');
 	const [index, setIndex] = useState({ startIndex: 1, page: 1 });
 	const [input, setInput] = useState(search ?? '');
@@ -140,3 +139,5 @@ export const Search = () => {
 		</div>
 	);
 };
+
+export default Search;

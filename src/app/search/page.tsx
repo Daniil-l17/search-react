@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { Search } from './Search';
+import  Search  from './Search';
 import { axiosBase } from '@/config/axiosBase';
 import { Search as searchType } from '@/types/search';
 
