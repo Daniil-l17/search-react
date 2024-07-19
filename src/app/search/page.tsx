@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
-import  Search  from './Search';
+import Search from './Search';
 import { axiosBase } from '@/config/axiosBase';
 import { Search as searchType } from '@/types/search';
+import { Suspense } from 'react';
 
 type Props = {
 	searchParams: { q: string };
@@ -15,13 +16,17 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 		};
 	} catch {
 		return {
-      title: "Firefox developer"
-    }
+			title: 'Firefox developer'
+		};
 	}
 }
 
 const page = () => {
-	return <Search />;
+	return (
+		<Suspense>
+			<Search />
+		</Suspense>
+	);
 };
 
 export default page;
