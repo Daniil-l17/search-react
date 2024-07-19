@@ -1,0 +1,18 @@
+
+
+.logo{
+  background-image: url('/Firefox_Developer_Edition_logo,_2013.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 85px;
+  height: 85px;
+  @media (max-width:400px) {
+    width: 65px;
+    height: 65px;
+  }
+  background-size: cover;
+}
+
+.logo:hover{
+  filter: drop-shadow(0 0 2em #1d4b9595);
+}
