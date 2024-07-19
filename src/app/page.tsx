@@ -52,7 +52,7 @@ export default function Home() {
 					.map(item => (item === '' ? '+' : item))
 					.join('')}`}
 			/>
-			<div className='flex max-[460px]:overflow-auto  max-[460px]:h-[520px] w-full max-w-[900px] flex-wrap justify-center gap-8'>
+			<div className='flex max-[460px]:overflow-auto  max-[460px]:h-[450px] w-full max-w-[900px] flex-wrap justify-center gap-8'>
 				{[...Array(16)].map((_, index) => {
 					return <div key={index} className={`bgColor  whites cursor-pointer w-[80px] h-[80px] rounded-md`}></div>;
 				})}

@@ -42,13 +42,13 @@ const Modal = ({ open, setOpen }: { open: boolean; setOpen: () => void }) => {
 				onClick={e => e.stopPropagation()}
 				className={`w-full flex flex-col ${
 					setting.theme === 'dark' ? 'bg-[#363636]' : setting.theme === 'white' ? 'bg-[#c9c9c9]' : setting.theme === 'blue' ? 'bg-[#6c96db]' : ''
-				} border-[0.01px] border-[#5151517b] p-4 rounded-lg max-w-[900px] transition-all duration-2000 min-h-[450px] ${open ? 'scale-100' : 'scale-0'}`}
+				} border-[0.01px] border-[#5151517b] max-[920px]:h-[450px] max-[920px]:overflow-auto max-[920px]:m-4 p-4 rounded-lg max-w-[900px] transition-all duration-2000 min-h-[450px] ${open ? 'scale-100' : 'scale-0'}`}
 			>
 				<div className='flex justify-between items-center'>
 					<h2 className=' font-semibold text-lg'>Настройки браузера</h2>
 					<X onClick={setOpen} className=' cursor-pointer' />
 				</div>
-				<div className='flex gap-6 flex-wrap mt-4'>
+				<div className='flex max-[920px]:flex-nowrap max-[920px]:pb-4 max-[920px]:overflow-auto gap-6 flex-wrap mt-4'>
 					{themePage.map((theme, index) => {
 						return (
 							<div
@@ -58,7 +58,7 @@ const Modal = ({ open, setOpen }: { open: boolean; setOpen: () => void }) => {
 									theme.theme === activeTheme ? 'border-[2px] px-2 py-2 rounded-lg border-[#6e6ef5]' : ''
 								}  h-[120px]`}
 							>
-								<div style={{ background: `#${theme.color}` }} className={`rounded-md h-[70%]`}></div>
+								<div style={{ background: `#${theme.color}` }} className={`rounded-md max-[920px]:w-[160px] h-[70%]`}></div>
 								<h2 className=' font-medium text-sm mt-1'>{theme.title}</h2>
 							</div>
 						);
