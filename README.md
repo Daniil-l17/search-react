@@ -1,4 +1,4 @@
-# Приложения для  контроля сотрудников
+# Копия браузера FireFox Developer со своим функционалом и возможностями
 
 Это приложение было создано с помощью React, NextJs14, react-intersection-observer, react-toastify, next-themes
 
@@ -15,39 +15,45 @@
 - Обновлять персональные данные о сотрудника
 
 
-## Run Locally
+## Запускается локально
 
-Clone the project
+Ссылка на сайт
 
 ```bash
-https://github.com/Daniil-l17/Staff.git
+https://search-react-weld.vercel.app/
 ```
 
-Install dependencies
+Клонировать проект
+
+```bash
+https://github.com/Daniil-l17/search-react.git
+```
+
+Устанавливать зависимости
 
 ```bash
 yarn install
 ```
 
-Start the app in dev
+Запустите приложение в dev
 
 ```bash
 yarn dev
 ```
 
-Start the app in production
+Запустите приложение в рабочем режиме
 
 ```bash
 yarn build
 ```
 
-then
+затем
 
 ```bash
 yarn start
 ```
 
-## Screenshots
+## Скриншоты
 
 
 
