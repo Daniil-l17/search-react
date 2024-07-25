@@ -8,6 +8,7 @@ type Props = {
 	searchParams: { q: string };
 };
 
+//@ts-ignore
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
 	try {
 /*		const searchInfo = (await axiosBase.get<searchType>(`&q=${searchParams.q}`)).data;
