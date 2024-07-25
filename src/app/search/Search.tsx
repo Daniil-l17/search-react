@@ -34,7 +34,7 @@ const Search = () => {
 	const { data, isLoading, error, refetch } = useQuery({
 		queryKey: ['searchInfo'],
 		queryFn: async () => await searchServices.getSearch(search ?? '', index.startIndex, index.page),
-		refetchOnWindowFocus: false
+		refetchOnWindowFocus: false,
 	});
 
 	const { ref: refInView, inView } = useInView({
@@ -47,14 +47,14 @@ const Search = () => {
 		}
 	}, [data]);
 
-	useEffect(() => {
+/*	useEffect(() => {
 		if (data?.items.length) {
 			if (inView) {
 				setIndex({ page: (index.page += 1), startIndex: (index.startIndex += 10) });
 				refetch();
 			}
 		}
-	}, [inView]);
+	}, [inView]);*/
 
 	const fun = () => {
 		ref.current?.click();
@@ -68,10 +68,10 @@ const Search = () => {
 	return (
 		<div className='relative py-6 px-6'>
 			<div>
-				<div className='flex pb-4 max-[800px]:flex-col max-[800px]:gap-4 items-center gap-10'>
+				<div className='flex pb-4 px-2 max-[800px]:flex-col max-[800px]:gap-4 items-center gap-10'>
 					<Link href={'/'} replace className='flex gap-4 items-center'>
 						<Logo width='55px' height='55px' />
-						<h2 className=' text-[22px] font-medium'>Firefox developer</h2>
+						<h2 className=' w-[171px] text-[22px] font-medium'>Firefox developer</h2>
 					</Link>
 					<Link
 						ref={ref}
@@ -83,7 +83,7 @@ const Search = () => {
 					/>
 					<Input func={fun} onChange={e => setInput(e.target.value)} value={input ?? ''} w={750} h={45} />
 				</div>
-				<div className='flex gap-6 max-[460px]:overflow-auto py-2'>
+				<div className='flex scrols gap-6 py-2'>
 					{menu.map((item, index) => {
 						return (
 							<h2
@@ -96,7 +96,7 @@ const Search = () => {
 							</h2>
 						);
 					})}
-				</div>
+        </div>
 				<div className='bg-[#333] absolute left-0 right-0 w-full h-[1px] '></div>
 				{isLoading ? (
 					<ResultSkeleton />
@@ -118,18 +118,20 @@ const Search = () => {
 								<div className='flex mb-[2px] gap-2 items-center'>
 									<img
 										src={item.pagemap.metatags[0]['og:image']?.length ? item.pagemap.metatags[0]['og:image'] : item.pagemap['cse_thumbnail']?.[0].src ?? './not-found-image-15383864787lu.jpg'}
-										className=' w-[40px] object-center object-cover h-[40px] rounded-[50%]'
+										className=' !w-[40px] object-center object-cover !h-[40px] rounded-[50%]'
 										alt={item.title}
+                    width={40}
+                    height={40}
 									/>
-									<div>
+									<div className='w-full'>
 										<h2 className=''>{item.displayLink}</h2>
-										<p>{item.formattedUrl}</p>
+										<p className='w-full max-[600px]:truncate max-[600px]:w-[230px] '>{item.formattedUrl}</p>
 									</div>
 								</div>
 								<a target='_blank' href={item.formattedUrl} className=' text-[22px] cursor-pointer text-[#8eb3fd] font-medium'>
 									{item.title}
 								</a>
-								<p className=' w-[700px] text-wrap'>{item.snippet}</p>
+								<p className=' w-full max-w-[700px] text-wrap'>{item.snippet}</p>
 							</div>
 						))
 					)}

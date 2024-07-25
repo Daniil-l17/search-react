@@ -10,10 +10,10 @@ type Props = {
 
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
 	try {
-		const searchInfo = (await axiosBase.get<searchType>(`&q=${searchParams.q}`)).data;
+/*		const searchInfo = (await axiosBase.get<searchType>(`&q=${searchParams.q}`)).data;
 		return {
 			title: `${searchInfo.queries.request[0].searchTerms} - Firefox нашлось ${searchInfo.queries.request[0].totalResults}`
-		};
+		};*/
 	} catch {
 		return {
 			title: 'Firefox developer'

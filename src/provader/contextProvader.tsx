@@ -6,10 +6,9 @@ export const Setting = createContext(context);
 export const ContextProvader = ({ children }: { children: React.ReactNode }) => {
 	const [theme, setTheme] = useState('dark');
 	const [messageFiltering, setMessageFiltering] = useState(false);
-
+  const [searchHistory,setSearchHistory] = useState([])
 	useEffect(() => {
 		setTheme(localStorage.getItem('theme') ?? 'dark');
-		console.log(!!+localStorage.getItem('messageFiltering')!);
 		setMessageFiltering(localStorage.getItem('messageFiltering')! === 'true' ?? false);
 	}, []);
 

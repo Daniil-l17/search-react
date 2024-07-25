@@ -40,6 +40,20 @@
   }
 }
 
+@media (max-width:460px) {
+  .scrols{
+    overflow: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrols::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}
+
+
+
 
 .imgCenter {
   background-position: center;
