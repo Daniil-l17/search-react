@@ -59,13 +59,25 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url('https://static.gazeta.ru/nm2021/img/gazeta_og_image_default_2023.png');
+  background-color: #383838;
   border-radius: 50%;
   width: 40px;
   height: 40px;
 }
 
-.blur {
+
+.activeImage{
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.bgGradient{
+  background: linear-gradient(93.83deg, rgb(251, 84, 43) -3.53%, rgb(202, 59, 178) 110.11%);
+}
+
+
+.blursss {
   filter: blur(90%);
 }
 

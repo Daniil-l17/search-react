@@ -1,17 +1,24 @@
 import { useEffect, useState } from 'react';
 
-export const useOnlineStatus = (): boolean => {
+export const useOnlineStatus = (): { status: boolean; isLoading: boolean } => {
 	const [status, setStatus] = useState(true);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		document.addEventListener('online', () => {
-			setStatus(true);
-		});
-		document.addEventListener('offline', () => {
-			setStatus(false);
-		});
-    setStatus(navigator.onLine)
+		setIsLoading(false);
 	}, []);
 
-	return status;
+	useEffect(() => {
+		if (navigator) {
+			setStatus(navigator.onLine);
+		}
+		window.addEventListener('online', () => {
+			setStatus(true);
+		});
+		window.addEventListener('offline', () => {
+			setStatus(false);
+		});
+	}, []);
+
+	return { status, isLoading };
 };

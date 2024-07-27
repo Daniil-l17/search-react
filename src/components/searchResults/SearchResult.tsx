@@ -1,6 +1,7 @@
-import React from 'react';
+import { memo } from "react";
 
-export const SearchResult = ({time,totalResult,title}:{time:string,totalResult:string,title:string}) => {
+
+export const SearchResult = memo(({time,totalResult,title}:{time:string,totalResult:string,title:string}) => {
 	return (
 		<div className='mt-2'>
 			<h2 className='text-xl font-medium'>
@@ -9,4 +10,4 @@ export const SearchResult = ({time,totalResult,title}:{time:string,totalResult:s
 			<p className=' text-[#838383] font-semibold'>Результатов: примерно {totalResult} ({time} сек.) </p>
 		</div>
 	);
-};
+})

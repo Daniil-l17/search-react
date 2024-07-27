@@ -1,89 +1,46 @@
-import { useContextHook } from '@/hooks/useContext';
-import { X } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
-import { useTheme } from 'next-themes';
-import { toast } from 'react-toastify';
-const themePage = [
-	{ title: 'Темная тема', theme: 'dark', color: '424242', development: false },
-	{ title: 'Светлая тема', theme: 'white', color: 'eeeeeedd', development: false },
-	{ title: 'Синяя тема', theme: 'blue', color: '2c64fddd', development: false },
-	{ title: 'красная тема', theme: 'red', color: 'f66965dd', development: true },
-	{ title: 'Зеленая тема', theme: 'green', color: '73e7a9dd', development: true }
-] as const;
+import { Image, Clock8, Search, AudioLines } from 'lucide-react';
+import { memo, useState } from 'react';
+import { ModalHeader } from '../modalHeader/ModalHeader';
+import { ModalMenu } from '../modalMenu/ModalMenu';
+import { BackgroundImages } from '../backgroundImages/BackgroundImages';
+import { Statistics } from '../statistics/Statistics';
+import { TimeMode } from '../timeMode/TimeMode';
+import { SafeSearch } from '../safeSearch/SafeSearch';
 
-const Modal = ({ open, setOpen }: { open: boolean; setOpen: () => void }) => {
-	const { isLoading, setting } = useContextHook();
-	const { theme, setTheme } = useTheme();
-	const [activeTheme, setActiveTheme] = useState(setting.theme);
-	const [active, setActive] = useState(setting.messageFiltering);
+const menuModal = [
+	{ title: 'Фоновое Изображение', img: <Image className=' w-6 h-6 text-[#a1b2ba]' />, top: 58, content: <BackgroundImages /> },
+	{ title: 'Статистика FireFox', img: <AudioLines className=' w-6 h-6 text-[#a1b2ba]' />, top: 114, content: <Statistics /> },
+	{ title: 'Часы', img: <Clock8 className=' w-6 h-6 text-[#a1b2ba]' />, top: 170, content: <TimeMode /> },
+	{ title: 'Поиск', img: <Search className=' w-6 h-6 text-[#a1b2ba]' />, top: 229, content: <SafeSearch /> }
+];
 
-	const updateSetting = () => {
-		if (activeTheme === setting.theme && active === setting.messageFiltering) return toast.error('вы ничего не поменяли!', { theme: 'colored' });
-		setting.updateTheme(activeTheme), setTheme(activeTheme), setting.updateMessageFiltering(active);
-		localStorage.setItem('messageFiltering', JSON.stringify(active));
-		toast.success('Настройки успешно изменнены! 😊', { theme: 'colored' });
-		setOpen();
-	};
+const Modal = memo(
+	({ open, setOpen }: { open: boolean; setOpen: () => void }) => {
+		const [active, setActive] = useState<{ title: string; img: React.JSX.Element; top: number; content: React.JSX.Element }>(() => menuModal[0]);
 
-	useEffect(() => {
-		setActiveTheme(setting.theme);
-	}, [setting.theme, open]);
-
-	useEffect(() => {
-		setActive(setting.messageFiltering);
-	}, [setting.messageFiltering, open]);
-
-	return (
-		<div
-			onClick={setOpen}
-			className={`transition-all duration-2000  bg-[#23232373] fixed top-0 flex justify-center items-center left-0 right-0 bottom-0 ${open ? 'opacity-100 z-[10]' : 'opacity-0 z-[-10] '}`}
-		>
+		return (
 			<div
-				onClick={e => e.stopPropagation()}
-				className={`w-full flex flex-col ${
-					setting.theme === 'dark' ? 'bg-[#363636]' : setting.theme === 'white' ? 'bg-[#c9c9c9]' : setting.theme === 'blue' ? 'bg-[#6c96db]' : ''
-				} border-[0.01px] border-[#5151517b] max-[920px]:h-[450px] max-[920px]:overflow-auto max-[920px]:m-4 p-4 rounded-lg max-w-[900px] transition-all duration-2000 min-h-[450px] ${open ? 'scale-100' : 'scale-0'}`}
+				onClick={setOpen}
+				className={`transition-all duration-200 bg-[#23232373] fixed top-0 flex justify-center items-center left-0 right-0 bottom-0 ${open ? 'opacity-100 z-[10]' : 'opacity-0 z-[-10] '}`}
 			>
-				<div className='flex justify-between items-center'>
-					<h2 className=' font-semibold text-lg'>Настройки браузера</h2>
-					<X onClick={setOpen} className=' cursor-pointer' />
-				</div>
-				<div className='flex max-[920px]:flex-nowrap max-[920px]:pb-4 max-[920px]:overflow-auto gap-6 flex-wrap mt-4'>
-					{themePage.map((theme, index) => {
-						return (
-							<div
-								onClick={() => !theme.development && setActiveTheme(theme.theme)}
-								key={index}
-								className={`w-[190px] ${theme.development ? 'cursor-not-allowed' : 'cursor-pointer'} ${
-									theme.theme === activeTheme ? 'border-[2px] px-2 py-2 rounded-lg border-[#6e6ef5]' : ''
-								}  h-[120px]`}
-							>
-								<div style={{ background: `#${theme.color}` }} className={`rounded-md max-[920px]:w-[160px] h-[70%]`}></div>
-								<h2 className=' font-medium text-sm mt-1'>{theme.title}</h2>
-							</div>
-						);
-					})}
-				</div>
-				<div className='flex flex-col gap-2 mt-2'>
-					<div className='flex items-center gap-2 '>
-						<h2 className=' font-semibold'>{active ? 'Фильтрация контента включена!' : 'Включить фильтрацию контента?'}</h2>
-						<label className='switch'>
-							<input type='checkbox' />
-							<span onClick={() => setActive(!active)} className={`slider ${active ? '!bg-[#3a4b39] inputActive' : ''}`}>
-								<div className={`pick  ${active ? ' inputActive' : ''}`}></div>
-							</span>
-						</label>
+				<div
+					onClick={e => e.stopPropagation()}
+					className={`w-full flex flex-col bg-[#0d1214] border-[0.01px] border-[#5151517b]  max-[620px]:h-[430px] max-[620px]:min-h-0 max-[920px]:overflow-auto max-[920px]:m-4 p-4 rounded-[10px] max-w-[900px] transition-all duration-200 min-h-[450px] ${
+						open ? 'scale-100' : 'scale-0'
+					}`}
+				>
+					<ModalHeader setOpen={setOpen} />
+					<div className='flex h-[320px] max-[620px]:gap-1 mt-[14px] w-full gap-8'>
+						<ModalMenu setActive={setActive} active={active} menuModal={menuModal} />
+						<div className='px-4 max-[620px]:px-1 flex-1 '>{active.content ?? null}</div>
 					</div>
-					<p className=' font-semibold'>{active ? 'использование мата запрещено' : 'запрещает использовать мат в поиске'}</p>
-				</div>
-				<div className='flex flex-1 items-end justify-end'>
-					<button onClick={updateSetting} className=' py-2 px-4 bg-[#45ae8fd0] rounded-lg'>
-						применить настройки
-					</button>
 				</div>
 			</div>
-		</div>
-	);
-};
+		);
+	},
+	(prev, next) => {
+		return prev.open === next.open;
+	}
+);
 
 export default Modal;

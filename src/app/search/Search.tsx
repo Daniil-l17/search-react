@@ -1,28 +1,23 @@
-'use client'
+'use client';
 import { Logo } from '@/components/logo/Logo';
 import { SearchResult } from '@/components/searchResults/SearchResult';
 import { ResultSkeleton } from '@/components/skeleton/ResultSkeleton';
 import { Skileton } from '@/components/skeleton/Skileton';
 import { Input } from '@/components/ui/Input';
+import { menu } from '@/constants/const';
+import { useContextHook } from '@/hooks/useContext';
 
 import { searchServices } from '@/services/searchServices';
 import { Item } from '@/types/search';
 
 import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-const menu = [
-	{ title: 'Все', development: false },
-	{ title: 'Изображения', development: false },
-	{ title: 'Картинки', development: true },
-	{ title: 'Видео', development: true },
-	{ title: 'Покупки', development: true }
-] as const;
 
-const negative = ['сука', 'блять', 'ахуеть', 'пиздец', 'пидр'];
 
 const Search = () => {
 	const searchParams = useSearchParams();
@@ -31,11 +26,15 @@ const Search = () => {
 	const [input, setInput] = useState(search ?? '');
 	const ref = useRef<HTMLAnchorElement | null>(null);
 	const [searchResult, setSearchResult] = useState<Item[]>([]);
-	const { data, isLoading, error, refetch } = useQuery({
+	const { setting } = useContextHook();
+	const { data, error, refetch,isFetching,isLoading } = useQuery({
 		queryKey: ['searchInfo'],
-		queryFn: async () => await searchServices.getSearch(search ?? '', index.startIndex, index.page),
-		refetchOnWindowFocus: false,
+		queryFn: async () => await searchServices.getSearch(input ?? '', index.startIndex),
+		refetchOnWindowFocus: false
 	});
+
+
+  
 
 	const { ref: refInView, inView } = useInView({
 		threshold: 0.2
@@ -47,23 +46,21 @@ const Search = () => {
 		}
 	}, [data]);
 
-/*	useEffect(() => {
+	useEffect(() => {
 		if (data?.items.length) {
 			if (inView) {
-				setIndex({ page: (index.page += 1), startIndex: (index.startIndex += 10) });
+				setIndex({ page: (index.page += 1), startIndex: (index.startIndex += 1) });
 				refetch();
 			}
 		}
-	}, [inView]);*/
+	}, [inView]);
 
 	const fun = () => {
 		ref.current?.click();
-		refetch();
 		setSearchResult([]);
+		refetch();
 		setIndex({ page: 1, startIndex: 1 });
 	};
-
-	console.log(searchResult);
 
 	return (
 		<div className='relative py-6 px-6'>
@@ -96,39 +93,40 @@ const Search = () => {
 							</h2>
 						);
 					})}
-        </div>
+				</div>
 				<div className='bg-[#333] absolute left-0 right-0 w-full h-[1px] '></div>
-				{isLoading ? (
+				{isFetching && !searchResult.length ? (
 					<ResultSkeleton />
 				) : (
 					<SearchResult time={data?.searchInformation.formattedSearchTime ?? '0'} title={search ?? ''} totalResult={data?.searchInformation.formattedTotalResults ?? ''} />
 				)}
 				<div className='mt-2 flex flex-col gap-5'>
-					{isLoading ? (
+					{isFetching && !searchResult.length ? (
 						<div>
-							{[...Array(7)].map(() => (
-								<Skileton />
+							{[...Array(7)].map((_,index) => (
+								<Skileton index={index} />
 							))}
 						</div>
 					) : error ? (
 						<p className=' text-lg font-semibold'>По вашему запросу ничего не найденно 😔</p>
 					) : (
-						searchResult.map(item => (
-							<div>
+						searchResult.map((item,index) => (
+							<div key={index}>
 								<div className='flex mb-[2px] gap-2 items-center'>
-									<img
-										src={item.pagemap.metatags[0]['og:image']?.length ? item.pagemap.metatags[0]['og:image'] : item.pagemap['cse_thumbnail']?.[0].src ?? './not-found-image-15383864787lu.jpg'}
-										className=' !w-[40px] object-center object-cover !h-[40px] rounded-[50%]'
-										alt={item.title}
-                    width={40}
-                    height={40}
-									/>
+									<div
+										style={{
+											backgroundImage: `url(${
+												item.pagemap.metatags?.[0]?.['og:image']?.length ? item.pagemap.metatags?.[0]['og:image'] : item.pagemap['cse_thumbnail']?.[0].src ?? './not-found-image-15383864787lu.jpg'
+											})`
+										}}
+										className='imgCenter'
+									></div>
 									<div className='w-full'>
 										<h2 className=''>{item.displayLink}</h2>
 										<p className='w-full max-[600px]:truncate max-[600px]:w-[230px] '>{item.formattedUrl}</p>
 									</div>
 								</div>
-								<a target='_blank' href={item.formattedUrl} className=' text-[22px] cursor-pointer text-[#8eb3fd] font-medium'>
+								<a onClick={() => setting.addSearchHistory(item)} target='_blank' href={item.formattedUrl} className=' text-[22px] cursor-pointer text-[#8eb3fd] font-medium'>
 									{item.title}
 								</a>
 								<p className=' w-full max-w-[700px] text-wrap'>{item.snippet}</p>

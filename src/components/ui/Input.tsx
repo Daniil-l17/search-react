@@ -1,3 +1,4 @@
+import { memo } from "react";
 
 
 
@@ -10,7 +11,7 @@ interface Props {
   errorMessage?:boolean
 }
 
-export const Input = ({ w = 700, h = 50, func, value, onChange,errorMessage }: Props) => {
+export const Input = memo(({ w = 700, h = 50, func, value, onChange,errorMessage }: Props) => {
 	return (
 		<input
 			style={{ height: `${h}px`, maxWidth: `${w}px` }}
@@ -22,4 +23,4 @@ export const Input = ({ w = 700, h = 50, func, value, onChange,errorMessage }: P
 			placeholder='Введите поисковый запрос или URL'
 		/>
 	);
-};
+})
