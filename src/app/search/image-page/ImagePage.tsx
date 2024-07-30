@@ -53,7 +53,7 @@ const ImagePage = () => {
 	}, [search]);
 	return (
 		<div>
-			<div className='w-full max-[1200px]:justify-evenly max-[1000px]:center  max-[700px]:gap-3 mt-4 flex flex-wrap gap-8'>
+			<div className='w-full max-[1200px]:justify-evenly max-[700px]:justify-center max-[1000px]:center max-[700px]:gap-3 mt-4 flex flex-wrap gap-8'>
 				{isFetching && !searchResultImage.length ? (
 					[...Array(12)].map((_, index) => {
 						return <SearchSkeleton index={index} />;
