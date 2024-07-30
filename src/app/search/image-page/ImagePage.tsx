@@ -67,7 +67,7 @@ const ImagePage = () => {
 							key={index}
 							className='w-[280px] max-[420px]:w-[350px] max-[420px]:h-[400px]  max-[700px]:h-[350px] max-[700px]:w-[180px] cursor-pointer rounded-md activeImage h-[390px]'
 						>
-							<img
+							{/*							<img
 								src={`${
 									item.link.includes('instagram') ||
 									item.link.includes('fbsbx') ||
@@ -80,8 +80,24 @@ const ImagePage = () => {
 								}`}
 								alt=''
 								loading='lazy'
-								className='w-[280px] max-[420px]:w-[350px]  max-[420px]:!object-fill max-[420px]:h-[320px] max-[700px]:w-[180px] max-[700px]:h-[228px] object-cover bg-[#333] activeImage rounded-md h-[290px]'
-							/>
+								className='w-[280px] '
+							/>*/}
+							<div
+								style={{
+									backgroundImage: `url(${
+										item.link.includes('instagram') ||
+										item.link.includes('fbsbx') ||
+										item.link.includes('tiktok.com') ||
+										item.link.includes('bbci') ||
+										item.link.includes('euronews') ||
+										item.link.includes('ds-aliev') ||
+										item.link.includes('twimg.com')
+											? item.image.thumbnailLink
+											: item.link
+									})`
+								}}
+								className='activeImage max-[420px]:w-[350px]  max-[420px]:!object-fill max-[420px]:h-[320px] max-[700px]:w-[180px] max-[700px]:h-[228px] object-cover bg-[#333] activeImage rounded-md h-[290px] '
+							></div>
 							<div className=' mt-[2px]'>
 								<h2 className=' text-[19px] max-[700px]:text-[16px] truncate w-[170px] font-semibold'>{item.displayLink}</h2>
 								<p className=' font-medium'>{item.title}</p>
@@ -99,5 +115,4 @@ const ImagePage = () => {
 	);
 };
 
-
-export default ImagePage
+export default ImagePage;

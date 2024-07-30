@@ -1,13 +1,24 @@
 import { useContextHook } from '@/hooks/useContext';
 import { Trash2 } from 'lucide-react';
+import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 
 export const HistorySearch = () => {
 	const { setting } = useContextHook();
+
+	useEffect(() => {
+		localStorage.setItem('searchHistory', JSON.stringify(setting.searchHistory));
+	}, [setting.searchHistory]);
+
 	return (
 		<div className='flex justify-between items-center'>
 			<h2 className=' text-sm max-[620px]:text-base font-semibold'>История поиска</h2>
-			<Trash2 onClick={() => {setting.setSearchHistory([]),toast.success('История очищена',{theme: 'colored'})}} className=' cursor-pointer hover:text-[#c86a6a] transiti duration-300 text-[#aeaeae]' />
+			<Trash2
+				onClick={() => {
+					setting.setSearchHistory([]), toast.success('История очищена', { theme: 'colored' });
+				}}
+				className=' cursor-pointer hover:text-[#c86a6a] transiti duration-300 text-[#aeaeae]'
+			/>
 		</div>
 	);
 };
