@@ -7,7 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-export const ImagePage = () => {
+const ImagePage = () => {
 	const searchParams = useSearchParams();
 	const search = searchParams.get('q');
 	const [searchResultImage, setSearchResultImage] = useState<Item[]>([]);
@@ -98,3 +98,6 @@ export const ImagePage = () => {
 		</div>
 	);
 };
+
+
+export default ImagePage

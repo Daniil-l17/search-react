@@ -1,7 +1,10 @@
-import { ImagePage } from './ImagePage';
+import { Metadata } from 'next';
+import ImagePage from './ImagePage';
 
-export const page = () => {
-	return <ImagePage />;
+export const metadata: Metadata = {
+	title: 'Firefox developer image'
 };
 
-export default page;
+export default function page() {
+	return <ImagePage />;
+}
