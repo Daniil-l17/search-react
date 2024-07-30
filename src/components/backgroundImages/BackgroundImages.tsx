@@ -5,6 +5,7 @@ import { useContextHook } from '@/hooks/useContext';
 export const BackgroundImages = () => {
 	const { setting } = useContextHook();
 
+
 	return (
 		<div className='h-[100%]'>
 			<div className='flex justify-between items-center'>

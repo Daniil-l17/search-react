@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/Input';
 import { bgImage, negative } from '@/constants/const';
 import { useContextHook } from '@/hooks/useContext';
 import { useOnlineStatus } from '@/hooks/useOnlineStatus';
+import { Item } from '@/types/search';
 import { SlidersHorizontal } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -22,13 +23,26 @@ export default function Home() {
 	const { isLoading, status } = useOnlineStatus();
 	const { setting } = useContextHook();
 	const navigate = useRouter();
-	const [activeBg, setActiveBg] = useState(() => bgImage[Math.floor(Math.random() * bgImage.length)]);
+	const [activeBg] = useState(() => bgImage[Math.floor(Math.random() * bgImage.length)]);
+
+	const [currenCard, setCurrenCard] = useState<Item>({} as Item);
+	const [onDragOver, stOnDragOver] = useState<Item>({} as Item);
 
 	useEffect(() => {
 		if (!isLoading) {
 			if (!status) navigate.push('/internet-error');
 		}
 	}, [isLoading, status]);
+
+	useEffect(() => {
+		localStorage.setItem('isPrivateSearch', JSON.stringify(false));
+	}, []);
+
+	useEffect(() => {
+		if (setting.searchHistory.length) {
+			localStorage.setItem('searchHistory', JSON.stringify(setting.searchHistory));
+		}
+	}, [setting.searchHistory]);
 
 	const fun = () => {
 		if (input.length > 2) {
@@ -82,27 +96,40 @@ export default function Home() {
 					.map(item => (item === '' ? '+' : item))
 					.join('')}`}
 			/>
-			<div className='flex scrols  max-[460px]:justify-evenly max-[460px]:h-[450px] w-full max-w-[900px] flex-wrap justify-center gap-8'>
+			<div className='flex scrols min-h-[224px] justify-start max-[460px]:justify-evenly max-[460px]:h-[450px] w-full max-w-[900px] flex-wrap gap-8'>
 				{setting.searchHistory.map((item, index) => {
 					return (
-						<div key={index} className='flex flex-col gap-2'>
-							<div className={`bgColor whites cursor-pointer w-[80px] h-[80px] rounded-md`}>
-								<img
-									onClick={() => window.open(item.link)}
-									src={item.pagemap.metatags?.[0]?.['og:image']?.length ? item.pagemap.metatags?.[0]['og:image'] : item.pagemap['cse_thumbnail']?.[0].src ?? './not-found-image-15383864787lu.jpg'}
-									className=' !w-[100%] object-center object-cover !h-[100%] rounded-[6px]'
-									width={40}
-									height={40}
-								/>
+						<div
+							draggable={true}
+              onClick={() => window.open(item.formattedUrl)}
+							onDragStart={() => {
+								console.log('go', setCurrenCard(item));
+							}}
+							key={index}
+							onDrop={e => {
+								e.preventDefault();
+								setting.setSearchHistory(
+									[...setting.searchHistory].map(items => {
+										if (onDragOver.title === items.title) {
+											return { ...currenCard };
+										}
+										if (currenCard.title === items.title) {
+											return { ...item };
+										}
+										return items;
+									})
+								);
+							}}
+							onDragOver={e => {
+								e.preventDefault();
+								stOnDragOver(item);
+							}}
+							className={`flex w-[80px] ${onDragOver.title === item.title ? 'scale-110' : ''} h-[112px] cursor-grab flex-col gap-2`}
+						>
+							<div className={`bgColor bg-[#333] whites w-full h-[80px] rounded-md`}>
+                <div style={{backgroundImage: `url(${item.pagemap.metatags?.[0]?.['og:image']?.length ? item.pagemap.metatags?.[0]['og:image'] : item.pagemap['cse_thumbnail']?.[0].src ?? './not-found-image-15383864787lu.jpg'})`}} className='activeImage !w-[100%] object-center object-cover !h-[100%] rounded-[6px]'></div>
 							</div>
 							<h2 className='w-[70px] truncate cursor-pointer'>${item.formattedUrl}</h2>
-						</div>
-					);
-				})}
-				{[...Array(16 - setting.searchHistory.length)].map((_, index) => {
-					return (
-						<div key={index} className='flex flex-col gap-2'>
-							<div className={`bgColor  whites cursor-pointer w-[80px] h-[80px] rounded-md`}></div>
 						</div>
 					);
 				})}

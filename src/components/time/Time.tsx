@@ -23,7 +23,15 @@ export const Time = () => {
 
 	return (
 		<h2 className='fixed text-[#f7f7f7] font-semibold text-3xl cursor-pointer top-8 right-8'>
-			{setting.timeMode.format === '24' ? date.hours : date.hours - 12} : {date.minutes >= 10 ? date.minutes : '0' + String(date.minutes)}
+			{setting.timeMode.format === '24'
+				? date.hours
+				: String(date.hours - 12).includes('-')
+				? String(date.hours - 12)
+						.split('')
+						.filter(item => item !== '-')
+						.join('')
+				: date.hours - 12}{' '}
+			: {date.minutes >= 10 ? date.minutes : '0' + String(date.minutes)}
 		</h2>
 	);
 };

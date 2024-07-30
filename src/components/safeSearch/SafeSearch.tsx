@@ -6,9 +6,8 @@ export const SafeSearch = () => {
 	const { setting } = useContextHook();
 
 	return (
-		<div>
 			<div className='flex justify-between items-center'>
-				<h2 className=' text-sm font-semibold'>Включить безопасный поиск</h2>
+				<h2 className='flex-1 text-sm font-semibold'>Включить безопасный поиск</h2>
 				<ChexBox
 					setCheck={() => setting.updateMessageFiltering(!setting.messageFiltering)}
 					localStorageTitle='messageFiltering'
@@ -16,6 +15,5 @@ export const SafeSearch = () => {
 					active={setting.messageFiltering}
 				/>
 			</div>
-		</div>
 	);
 };

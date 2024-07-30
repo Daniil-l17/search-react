@@ -1,22 +1,35 @@
-import { Image, Clock8, Search, AudioLines } from 'lucide-react';
-import { memo, useState } from 'react';
+import { Image, Clock8, Search, AudioLines, History } from 'lucide-react';
+import { memo, useEffect, useState } from 'react';
 import { ModalHeader } from '../modalHeader/ModalHeader';
 import { ModalMenu } from '../modalMenu/ModalMenu';
 import { BackgroundImages } from '../backgroundImages/BackgroundImages';
 import { Statistics } from '../statistics/Statistics';
 import { TimeMode } from '../timeMode/TimeMode';
 import { SafeSearch } from '../safeSearch/SafeSearch';
+import { useWindowSize } from '@/hooks/useWindowSize';
+import { HistorySearch } from '../historySearch/HistorySearch';
 
 const menuModal = [
 	{ title: 'Фоновое Изображение', img: <Image className=' w-6 h-6 text-[#a1b2ba]' />, top: 58, content: <BackgroundImages /> },
 	{ title: 'Статистика FireFox', img: <AudioLines className=' w-6 h-6 text-[#a1b2ba]' />, top: 114, content: <Statistics /> },
 	{ title: 'Часы', img: <Clock8 className=' w-6 h-6 text-[#a1b2ba]' />, top: 170, content: <TimeMode /> },
-	{ title: 'Поиск', img: <Search className=' w-6 h-6 text-[#a1b2ba]' />, top: 229, content: <SafeSearch /> }
+	{ title: 'Поиск', img: <Search className=' w-6 h-6 text-[#a1b2ba]' />, top: 229, content: <SafeSearch /> },
+	{ title: 'История', img: <History className=' w-6 h-6 text-[#a1b2ba]' />, top: 280, content: <HistorySearch /> }
 ];
 
 const Modal = memo(
 	({ open, setOpen }: { open: boolean; setOpen: () => void }) => {
 		const [active, setActive] = useState<{ title: string; img: React.JSX.Element; top: number; content: React.JSX.Element }>(() => menuModal[0]);
+		const [mobile, setMobile] = useState(false);
+		const { height, width } = useWindowSize();
+
+		useEffect(() => {
+			if (width <= 620) {
+				setMobile(true);
+			} else {
+				setMobile(false);
+			}
+		}, [height, width]);
 
 		return (
 			<div
@@ -25,13 +38,13 @@ const Modal = memo(
 			>
 				<div
 					onClick={e => e.stopPropagation()}
-					className={`w-full flex flex-col bg-[#0d1214] border-[0.01px] border-[#5151517b]  max-[620px]:h-[430px] max-[620px]:min-h-0 max-[920px]:overflow-auto max-[920px]:m-4 p-4 rounded-[10px] max-w-[900px] transition-all duration-200 min-h-[450px] ${
+					className={`w-full flex flex-col bg-[#0d1214] border-[0.01px] border-[#5151517b]  max-[620px]:h-[450px] max-[620px]:min-h-0 max-[920px]:overflow-auto max-[920px]:m-4 p-4 rounded-[10px] max-w-[900px] transition-all duration-200 min-h-[450px] ${
 						open ? 'scale-100' : 'scale-0'
 					}`}
 				>
 					<ModalHeader setOpen={setOpen} />
 					<div className='flex h-[320px] max-[620px]:gap-1 mt-[14px] w-full gap-8'>
-						<ModalMenu setActive={setActive} active={active} menuModal={menuModal} />
+						<ModalMenu mobile={mobile} setActive={setActive} active={active} menuModal={menuModal} />
 						<div className='px-4 max-[620px]:px-1 flex-1 '>{active.content ?? null}</div>
 					</div>
 				</div>

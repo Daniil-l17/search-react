@@ -1,7 +1,7 @@
 'use client';
 
 import { Check } from 'lucide-react';
-import { Dispatch, FC, SetStateAction, useEffect } from 'react';
+import {FC, useEffect } from 'react';
 
 interface Props {
 	active: boolean

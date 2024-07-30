@@ -1,3 +1,4 @@
+'use client'
 import { Setting } from '@/provader/contextProvader';
 import { useContext, useEffect, useState } from 'react';
 

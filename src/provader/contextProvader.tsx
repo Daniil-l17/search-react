@@ -9,18 +9,20 @@ export interface PropsContext {
 	messageFiltering: boolean;
 	time: { min: number; h: number; sec: number; day: number };
 	isBackgroundImages: boolean;
+	privateSearch: boolean;
+  setSearchHistory: Dispatch<SetStateAction<Item[]>>;
+	setPrivateSearch: Dispatch<SetStateAction<boolean>>;
 	setTime: Dispatch<SetStateAction<{ min: number; h: number; sec: number; day: number }>>;
 	setIsBackgroundImages: Dispatch<SetStateAction<boolean>>;
 	timeMode: { show: boolean; format: '24' | '12' };
-	setPassword: Dispatch<SetStateAction<{ password: string; prompt: string; include: boolean; verified: boolean | null }>>;
-	password: { password: string; prompt: string; include: boolean; verified: boolean | null };
 	setTimeMode: Dispatch<SetStateAction<{ show: boolean; format: '24' | '12' }>>;
 }
 
 const context: PropsContext = {
 	searchHistory: [],
-	setPassword: () => {},
-	password: { password: '', prompt: '', include: false, verified: false },
+  setSearchHistory: () => {},
+	privateSearch: false,
+	setPrivateSearch: () => {},
 	setTimeMode: () => {},
 	time: { min: 0, h: 0, sec: 0, day: 0 },
 	setTime: () => {},
@@ -38,7 +40,7 @@ export const ContextProvader = ({ children }: { children: React.ReactNode }) => 
 	const [isBackgroundImages, setIsBackgroundImages] = useState(false);
 	const [time, setTime] = useState<{ min: number; h: number; sec: number; day: number }>({ min: 0, h: 0, sec: 0, day: 0 });
 	const [timeMode, setTimeMode] = useState<{ show: boolean; format: '24' | '12' }>({ show: false, format: '24' });
-	const [password, setPassword] = useState<{ password: string; prompt: string; include: boolean; verified: boolean | null }>({ password: '', prompt: '', include: false, verified: null });
+	const [privateSearch, setPrivateSearch] = useState(false);
 
 	useEffect(() => {
 		setTime(JSON.parse(localStorage.getItem('time') ?? '{}'));
@@ -48,7 +50,7 @@ export const ContextProvader = ({ children }: { children: React.ReactNode }) => 
 		setTimeMode(JSON.parse(localStorage.getItem('timeMode')! ?? '{"show":false,"format":"24"}'));
 	}, []);
 
-	useEffect(() => {
+		useEffect(() => {
 		const interval = setInterval(() => {
 			setTime(prev => {
 				localStorage.setItem('time', JSON.stringify(prev));
@@ -73,7 +75,7 @@ export const ContextProvader = ({ children }: { children: React.ReactNode }) => 
 			localStorage.setItem('searchHistory', JSON.stringify([item, ...searchHistory]));
 			return setSearchHistory(prev => [item, ...prev]);
 		}
-		const elements = searchHistory[0];
+		const elements = searchHistory.at(-1)
 		setSearchHistory(prev => prev.filter(items => !items.formattedUrl.includes(elements?.formattedUrl!)));
 		setSearchHistory(prev => [item, ...prev]);
 		localStorage.setItem('searchHistory', JSON.stringify([item, ...searchHistory]));
@@ -92,18 +94,19 @@ export const ContextProvader = ({ children }: { children: React.ReactNode }) => 
 	}, []);
 
 	useEffect(() => {
-		setPassword(JSON.parse(localStorage.getItem('psPage') ?? '{}'));
+		setPrivateSearch(localStorage.getItem('isPrivateSearch')! === 'true' ?? false);
 	}, []);
 
 	return (
 		<Setting.Provider
 			value={{
 				timeMode,
-				setPassword,
 				setTimeMode,
-				password,
 				time,
+				privateSearch,
+				setPrivateSearch,
 				setTime,
+        setSearchHistory,
 				searchHistory,
 				addSearchHistory,
 				isBackgroundImages,
