@@ -76,6 +76,7 @@ yarn start
 
 ![изображение](https://github.com/user-attachments/assets/f0aa063a-184f-4601-95be-688c620e9a24)
 
+![изображение](https://github.com/user-attachments/assets/1688c914-d816-49e6-be6f-dbe45782de4a)
 
 
 
