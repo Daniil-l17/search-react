@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/Input';
 import { menu } from '@/constants/const';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { Suspense, useRef, useState } from 'react';
 
 export const SearchLayout = ({ children }: { children: React.ReactNode }) => {
 	const ref = useRef<HTMLAnchorElement | null>(null);
@@ -71,7 +71,9 @@ export const SearchLayout = ({ children }: { children: React.ReactNode }) => {
 					})}
 				</div>
 				<div className='bg-[#333] absolute left-0 right-0 w-full h-[1px] '></div>
+        <Suspense>
 				{children}
+        </Suspense>
 			</div>
 		</div>
 	);
