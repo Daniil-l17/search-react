@@ -1,9 +1,12 @@
-import { SearchLayout } from "./SearchLayout"
+import { Suspense } from 'react';
+import { SearchLayout } from './SearchLayout';
 
+const layout = ({ children }: { children: React.ReactNode }) => {
+	return (
+		<Suspense>
+			<SearchLayout children={children} />
+		</Suspense>
+	);
+};
 
-
-const layout = ({children}:{children:React.ReactNode}) => {
-  return <SearchLayout children={children} />
-}
-
-export default layout
+export default layout;

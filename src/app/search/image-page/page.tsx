@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
 import ImagePage from './ImagePage';
-import { Suspense } from 'react';
 
 export const metadata: Metadata = {
 	title: 'Firefox developer image'
@@ -8,8 +7,6 @@ export const metadata: Metadata = {
 
 export default function page() {
 	return (
-		<Suspense>
 			<ImagePage />
-		</Suspense>
 	);
 }
