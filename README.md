@@ -21,7 +21,7 @@ tanstack-react-query, react-intersection-observer, google-api, react-toastify, n
 
 - Поиск картинок по всему миру
 
-- Статистика использования приложения
+- Выбрать Time зону
 
 - Статистика использования приложения 
 
