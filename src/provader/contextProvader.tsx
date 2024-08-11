@@ -10,7 +10,7 @@ export interface PropsContext {
 	time: { min: number; h: number; sec: number; day: number };
 	isBackgroundImages: boolean;
 	privateSearch: boolean;
-  setSearchHistory: Dispatch<SetStateAction<Item[]>>;
+	setSearchHistory: Dispatch<SetStateAction<Item[]>>;
 	setPrivateSearch: Dispatch<SetStateAction<boolean>>;
 	setTime: Dispatch<SetStateAction<{ min: number; h: number; sec: number; day: number }>>;
 	setIsBackgroundImages: Dispatch<SetStateAction<boolean>>;
@@ -20,7 +20,7 @@ export interface PropsContext {
 
 const context: PropsContext = {
 	searchHistory: [],
-  setSearchHistory: () => {},
+	setSearchHistory: () => {},
 	privateSearch: false,
 	setPrivateSearch: () => {},
 	setTimeMode: () => {},
@@ -43,14 +43,14 @@ export const ContextProvader = ({ children }: { children: React.ReactNode }) => 
 	const [privateSearch, setPrivateSearch] = useState(false);
 
 	useEffect(() => {
-		setTime(JSON.parse(localStorage.getItem('time') ?? '{}'));
+		setTime(JSON.parse(localStorage.getItem('time') ?? '{"min":0"h":0"sec":0"day":0}'));
 	}, []);
 
 	useEffect(() => {
 		setTimeMode(JSON.parse(localStorage.getItem('timeMode')! ?? '{"show":false,"format":"24"}'));
 	}, []);
 
-		useEffect(() => {
+	useEffect(() => {
 		const interval = setInterval(() => {
 			setTime(prev => {
 				localStorage.setItem('time', JSON.stringify(prev));
@@ -75,7 +75,7 @@ export const ContextProvader = ({ children }: { children: React.ReactNode }) => 
 			localStorage.setItem('searchHistory', JSON.stringify([item, ...searchHistory]));
 			return setSearchHistory(prev => [item, ...prev]);
 		}
-		const elements = searchHistory.at(-1)
+		const elements = searchHistory.at(-1);
 		setSearchHistory(prev => prev.filter(items => !items.formattedUrl.includes(elements?.formattedUrl!)));
 		setSearchHistory(prev => [item, ...prev]);
 		localStorage.setItem('searchHistory', JSON.stringify([item, ...searchHistory]));
@@ -106,7 +106,7 @@ export const ContextProvader = ({ children }: { children: React.ReactNode }) => 
 				privateSearch,
 				setPrivateSearch,
 				setTime,
-        setSearchHistory,
+				setSearchHistory,
 				searchHistory,
 				addSearchHistory,
 				isBackgroundImages,
