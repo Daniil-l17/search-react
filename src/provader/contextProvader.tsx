@@ -43,7 +43,7 @@ export const ContextProvader = ({ children }: { children: React.ReactNode }) => 
 	const [privateSearch, setPrivateSearch] = useState(false);
 
 	useEffect(() => {
-		setTime(JSON.parse(localStorage.getItem('time') ?? '{"min":0"h":0"sec":0"day":0}'));
+		setTime(JSON.parse(localStorage.getItem('time') ?? '{"min":0,"h":0,"sec":0,"day":0}'));
 	}, []);
 
 	useEffect(() => {
